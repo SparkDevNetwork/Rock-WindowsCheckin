@@ -140,6 +140,14 @@
     <Resource Include="app.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy "$(ProjectDir)libs\EO.WebBrowser\d3dcompiler_46.dll" "$(ProjectDir)bin\$(ConfigurationName)"
+xcopy "$(ProjectDir)libs\EO.WebBrowser\EO.WebBrowser.Native.dll" "$(ProjectDir)bin\$(ConfigurationName)"
+xcopy "$(ProjectDir)libs\EO.WebBrowser\ffmpegsumo.dll" "$(ProjectDir)bin\$(ConfigurationName)"
+xcopy "$(ProjectDir)libs\EO.WebBrowser\icudt.dll" "$(ProjectDir)bin\$(ConfigurationName)"
+xcopy "$(ProjectDir)libs\EO.WebBrowser\libEGL.dll" "$(ProjectDir)bin\$(ConfigurationName)"
+xcopy "$(ProjectDir)libs\EO.WebBrowser\libGLESv2.dll" "$(ProjectDir)bin\$(ConfigurationName)"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
