@@ -61,6 +61,12 @@ namespace CheckinClient
                 rockConfig.CacheLabelDuration = cacheLabelDuration;
             }
 
+            double zoomLevel;
+            if (double.TryParse(txtZoomLevel.Text, out zoomLevel)) 
+            {
+                rockConfig.ZoomLevel = zoomLevel;
+            }
+
             if ( txtPrinterOverrideIp.Text != string.Empty )
             {
                 rockConfig.PrinterOverrideIp = txtPrinterOverrideIp.Text;
@@ -110,6 +116,8 @@ namespace CheckinClient
             txtCheckinAddress.Text = rockConfig.CheckinAddress;
             txtPrinterOverrideIp.Text = rockConfig.PrinterOverrideIp;
             txtCacheLabelDuration.Text = rockConfig.CacheLabelDuration.ToString();
+            txtZoomLevel.Text = rockConfig.ZoomLevel.ToString();
+
             string localPrinterName = rockConfig.PrinterOverrideLocal;
             
             foreach ( string printer in System.Drawing.Printing.PrinterSettings.InstalledPrinters )
