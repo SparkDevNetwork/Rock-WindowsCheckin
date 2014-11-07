@@ -1,4 +1,5 @@
-﻿// <copyright>
+﻿using System;
+// <copyright>
 // Copyright 2013 by the Spark Development Network
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -135,6 +136,36 @@ namespace CheckinClient
             set
             {
                 this["CacheLabelDuration"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the zoom level.
+        /// </summary>
+        /// <value>
+        /// The zoom level of the web view (1 = 100%, max value = 500, min .25) .
+        /// </value>
+        [DefaultSettingValueAttribute( "" )]
+        [UserScopedSetting]
+        public double ZoomLevel
+        {
+            get
+            {
+                double minValue = .25 ;
+                double maxValue = 500;
+
+                double? zoomLevel = this["ZoomLevel"] as double?;
+                if ( !zoomLevel.HasValue || zoomLevel.Value < minValue || zoomLevel.Value > maxValue )
+                {
+                    zoomLevel = 1;
+                }
+
+                return zoomLevel.Value;
+            }
+
+            set
+            {
+                this["ZoomLevel"] = value;
             }
         }
 

@@ -5,9 +5,9 @@
         <ScaleTransform ScaleX="2" ScaleY="2" />
     </Canvas.LayoutTransform>
 -->
-<Canvas Name="Layer_1" Width="60.185" Height="60.063" ClipToBounds="True" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+<Canvas Name="Layer_1" Width="60" Height="60" ClipToBounds="True" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
     <Canvas.LayoutTransform>
-        <ScaleTransform ScaleX="2" ScaleY="2" />
+        <ScaleTransform ScaleX="1" ScaleY="1" />
     </Canvas.LayoutTransform>
     <Path Fill="#d1c9bc">
         <Path.Data>

@@ -38,13 +38,13 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EO.WebBrowser, Version=3.0.80.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+    <Reference Include="EO.WebBrowser, Version=3.0.89.1, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\EO.WebBrowser\EO.WebBrowser.dll</HintPath>
+      <HintPath>..\..\Program Files (x86)\Essential Objects\EO.Total 2014\EO.WebBrowser.dll</HintPath>
     </Reference>
     <Reference Include="EO.WebBrowser.Wpf, Version=3.0.89.1, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\EO.WebBrowser\EO.WebBrowser.Wpf.dll</HintPath>
+      <HintPath>..\..\Program Files (x86)\Essential Objects\EO.Total 2014\EO.WebBrowser.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
