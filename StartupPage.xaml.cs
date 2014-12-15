@@ -67,12 +67,10 @@ namespace CheckinClient
                 rockConfig.ZoomLevel = zoomLevel;
             }
 
-            if ( txtPrinterOverrideIp.Text != string.Empty )
-            {
-                rockConfig.PrinterOverrideIp = txtPrinterOverrideIp.Text;
-                rockConfig.PrinterOverrideLocal = string.Empty;
-            }
-            else
+           rockConfig.PrinterOverrideIp = txtPrinterOverrideIp.Text;
+           rockConfig.PrinterOverrideLocal = string.Empty;
+
+            if ( txtPrinterOverrideIp.Text == string.Empty )
             {
                 foreach ( Control control in spUsbPrinterList.Children )
                 {
