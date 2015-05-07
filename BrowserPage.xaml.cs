@@ -42,6 +42,7 @@ namespace CheckinClient
     {
 
         int closeClickBuffer = 0;
+        int closeTouchCount = 0;
         DispatcherTimer closeButtonRestartTimer = new DispatcherTimer();
         
         public BrowserPage()
@@ -86,15 +87,16 @@ namespace CheckinClient
             if ( closeClickBuffer == 0 )
                 closeButtonRestartTimer.Start();
 
-            closeClickBuffer++;
+            closeTouchCount++;
 
-            if ( closeClickBuffer > 300 )
+            if ( closeTouchCount >= 6 )
                 Application.Current.Shutdown();
         }
 
         // resets the close counter
         private void closeButtonRestartTimer_Tick( object sender, EventArgs e )
         {
+            closeTouchCount = 0;
             closeClickBuffer = 0;
             closeButtonRestartTimer.Stop();
         }

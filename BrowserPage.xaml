@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
 	  Title="Check-in"
-      Style="{StaticResource pageBackground}">
+      Style="{StaticResource pageBackground}" >
 
     <Grid x:Name="frmMain" Loaded="frmMain_Loaded">
 
@@ -22,7 +22,7 @@
             </eo:WebControl>
 
             <Popup x:Name="puOverlay" AllowsTransparency="True" PlacementTarget="{Binding ElementName=wbMain}" Opacity="0.5" Placement="Left" HorizontalOffset="100">
-                <RepeatButton x:Name="btnClose" Interval="10" Delay="10" Width="100" Height="100" Click="btnClose_Click" Opacity="0.01"></RepeatButton>
+                <Button x:Name="btnClose" Width="100" Height="100" Opacity="0.01" BorderBrush="{x:Null}" FocusVisualStyle="{x:Null}" Click="btnClose_Click"></Button>
             </Popup>
         </Grid>
     </Grid>
