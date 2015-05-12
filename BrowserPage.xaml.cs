@@ -55,20 +55,26 @@ namespace CheckinClient
             closeButtonRestartTimer.Tick += new EventHandler( closeButtonRestartTimer_Tick );
             closeButtonRestartTimer.Interval = new TimeSpan( 0, 0, 10 );
 
-            wcWebControl.AllowDrop = false;
-            wvWebView.CustomUserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.170 Safari/537.36 -rockwinclient2.0-";
-            wvWebView.RegisterJSExtensionFunction( "printLabels", new JSExtInvokeHandler( WebView_PrintLabels ) );
-            EO.WebBrowser.Runtime.CachePath = System.IO.Path.GetTempPath() + @"RockCheckin\Cache"; // System.AppDomain.CurrentDomain.BaseDirectory + "Cache";
-            EO.WebBrowser.Runtime.AddLicense(
+            
+
+            //wcWebControl.AllowDrop = false;
+            //wvWebView.CustomUserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.170 Safari/537.36 -rockwinclient2.0-";
+            //wvWebView.RegisterJSExtensionFunction( "printLabels", new JSExtInvokeHandler( WebView_PrintLabels ) );
+            //EO.WebBrowser.Runtime.CachePath = System.IO.Path.GetTempPath() + @"RockCheckin\Cache"; // System.AppDomain.CurrentDomain.BaseDirectory + "Cache";
+            /*EO.WebBrowser.Runtime.AddLicense(
                 "9+z29umMQ7Oz/RTinuX39umMQ3Xj7fQQ7azcwp61n1mXpM0X6Jzc8gQQyJ21" +
                 "usfftnKtu8XfsHWm8PoO5Kfq6doPvUaBpLHLn3Xj7fQQ7azc6c/nrqXg5/YZ" +
                 "8p7cwp61n1mXpM0M66Xm+8+4iVmXpLHLn1mXwPIP41nr/QEQvFu807/u56vm" +
                 "8fbNn6/c9gQU7qe0psPZr1uXs8+4iVmXpLHnrprj8AAivUaBpLHLn3Xm9vUQ" +
                 "8YLl6gDL45rr6c7NsGqmu8Ddr2qrprEh5Kvq7QAZvFupprHavUaBpLHLn3Xq" +
-                "7fgZ4K3s9vbpz5Ors+fw15/I88Aeso3B8sEjxIPI1c7ou2jq7fgZ4K0=" );
+                "7fgZ4K3s9vbpz5Ors+fw15/I88Aeso3B8sEjxIPI1c7ou2jq7fgZ4K0=" ); */
             var rockConfig = RockConfig.Load();
-            wvWebView.Url = new Uri( rockConfig.CheckinAddress ).ToString();
-            wvWebView.ZoomFactor = rockConfig.ZoomLevel;
+
+            wbWebBrowser.AllowDrop = true;
+            wbWebBrowser.Navigate( rockConfig.CheckinAddress.ToString() );
+
+            //wvWebView.Url = new Uri( rockConfig.CheckinAddress ).ToString();
+            //wvWebView.ZoomFactor = rockConfig.ZoomLevel;
 
             puOverlay.IsOpen = true;
         }

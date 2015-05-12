@@ -13,13 +13,9 @@
 
         <Grid x:Name="frmWebBrowser">
             
-
-            <eo:WebControl x:Name="wcWebControl">
-                <eo:WebControl.WebView>
-                    <eo:WebView x:Name="wvWebView" Url="http://www.rockrms.com">
-                    </eo:WebView>
-                </eo:WebControl.WebView>
-            </eo:WebControl>
+            
+            <WebBrowser x:Name="wbWebBrowser" />
+            
 
             <Popup x:Name="puOverlay" AllowsTransparency="True" PlacementTarget="{Binding ElementName=wbMain}" Opacity="0.5" Placement="Left" HorizontalOffset="100">
                 <Button x:Name="btnClose" Width="100" Height="100" Opacity="0.01" BorderBrush="{x:Null}" FocusVisualStyle="{x:Null}" Click="btnClose_Click"></Button>
