@@ -9,7 +9,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using EO.WebBrowser.Wpf;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -65,23 +64,7 @@ namespace CheckinClient {
         #line hidden
         
         
-        #line 18 "..\..\BrowserPage.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal EO.WebBrowser.Wpf.WebControl wcWebControl;
-        
-        #line default
-        #line hidden
-        
-        
         #line 20 "..\..\BrowserPage.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal EO.WebBrowser.Wpf.WebView wvWebView;
-        
-        #line default
-        #line hidden
-        
-        
-        #line 25 "..\..\BrowserPage.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Primitives.Popup puOverlay;
         
@@ -89,7 +72,7 @@ namespace CheckinClient {
         #line hidden
         
         
-        #line 26 "..\..\BrowserPage.xaml"
+        #line 21 "..\..\BrowserPage.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btnClose;
         
@@ -142,18 +125,12 @@ namespace CheckinClient {
             this.wbWebBrowser = ((System.Windows.Controls.WebBrowser)(target));
             return;
             case 4:
-            this.wcWebControl = ((EO.WebBrowser.Wpf.WebControl)(target));
-            return;
-            case 5:
-            this.wvWebView = ((EO.WebBrowser.Wpf.WebView)(target));
-            return;
-            case 6:
             this.puOverlay = ((System.Windows.Controls.Primitives.Popup)(target));
             return;
-            case 7:
+            case 5:
             this.btnClose = ((System.Windows.Controls.Button)(target));
             
-            #line 26 "..\..\BrowserPage.xaml"
+            #line 21 "..\..\BrowserPage.xaml"
             this.btnClose.Click += new System.Windows.RoutedEventHandler(this.btnClose_Click);
             
             #line default
