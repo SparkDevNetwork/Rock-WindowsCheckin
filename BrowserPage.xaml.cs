@@ -48,7 +48,7 @@ namespace CheckinClient
         
         public BrowserPage()
         {
-            SetBrowserCompatibilityMode();
+            //SetBrowserCompatibilityMode();
             InitializeComponent();
         }
 
@@ -62,6 +62,7 @@ namespace CheckinClient
             ScriptDirector scriptDirector = new ScriptDirector( this );
             wbWebBrowser.ObjectForScripting = scriptDirector;
             wbWebBrowser.AllowDrop = true;
+            
             wbWebBrowser.Navigate( rockConfig.CheckinAddress.ToString() );
 
             puOverlay.IsOpen = true;
@@ -105,6 +106,14 @@ namespace CheckinClient
                 key.SetValue( fileName, mode, RegistryValueKind.DWord );
             }
 
+            /*using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ZONE_ELEVATION",
+                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
+            {
+                // disable zone elevation prevention
+                UInt32 mode = 0;
+                key.SetValue( fileName, mode, RegistryValueKind.DWord );
+            }*/
+
             using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_LMZ_SCRIPT",
                 RegistryKeyPermissionCheck.ReadWriteSubTree ) )
             {
@@ -113,13 +122,13 @@ namespace CheckinClient
                 key.SetValue( fileName, mode, RegistryValueKind.DWord );
             }
 
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_NINPUT_LEGACYMODE",
+            /*using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_NINPUT_LEGACYMODE",
                 RegistryKeyPermissionCheck.ReadWriteSubTree ) )
             {
                 // disable Legacy Input Model
                 UInt32 mode = 0;
                 key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
+            }*/
 
         }
     }
