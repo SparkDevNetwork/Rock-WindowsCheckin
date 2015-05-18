@@ -29,6 +29,10 @@ namespace CheckinClient
             RockLabelPrinter printer = new RockLabelPrinter();
             printer.PrintLabels( tagJson );
         }
+
+        public void ErrorHandler(string message, string url, string lineNumber) {
+            string test = message;
+        }
     
     }
 }
