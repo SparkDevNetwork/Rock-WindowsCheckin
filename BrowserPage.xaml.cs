@@ -48,7 +48,6 @@ namespace CheckinClient
         
         public BrowserPage()
         {
-            //SetBrowserCompatibilityMode();
             SetWebBrowserFeatures();
             InitializeComponent();
         }
@@ -128,6 +127,10 @@ namespace CheckinClient
 
             Registry.SetValue( featureControlRegKey + "FEATURE_BLOCK_LMZ_OBJECT",
                 appName, 0, RegistryValueKind.DWord );
+
+            // turn off navigation sounds in IE
+            RegistryKey key = Registry.CurrentUser.OpenSubKey( @"AppEvents\Schemes\Apps\Explorer\Navigating\.Current", true );
+            key.SetValue( null, "", RegistryValueKind.ExpandString );
         }
 
         static UInt32 GetBrowserEmulationMode()
@@ -173,65 +176,6 @@ namespace CheckinClient
             return mode;
         }
 
-        private void SetBrowserCompatibilityMode()
-        {
-            // http://msdn.microsoft.com/en-us/library/ee330720(v=vs.85).aspx
-
-            // FeatureControl settings are per-process
-            var fileName = System.IO.Path.GetFileName( Process.GetCurrentProcess().MainModule.FileName );
-
-            if ( String.Compare( fileName, "devenv.exe", true ) == 0 ) // make sure we're not running inside Visual Studio
-                return;
-
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
-                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
-            {
-                // Webpages containing standards-based !DOCTYPE directives are displayed in IE10 Standards mode.
-                UInt32 mode = 11000; // 11000 = IE11, 10000 = IE10, 9000 = IE9, 8000 = IE8, 7000 = IE7; 
-                key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
-
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ZONE_ELEVATION",
-                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
-            {
-                // disable zone elevation prevention
-                UInt32 mode = 0;
-                key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
-
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_LMZ_SCRIPT",
-                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
-            {
-                // enable <scripts> in local machine zone
-                UInt32 mode = 0;
-                key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
-
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_NINPUT_LEGACYMODE",
-                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
-            {
-                // disable Legacy Input Model
-                UInt32 mode = 0;
-                key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
-
-            // new items
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_LOCALMACHINE_LOCKDOWN",
-                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
-            {
-                // disable Legacy Input Model
-                UInt32 mode = 0;
-                key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
-
-            using ( var key = Registry.CurrentUser.CreateSubKey( @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_LMZ_OBJECT",
-                RegistryKeyPermissionCheck.ReadWriteSubTree ) )
-            {
-                // disable Legacy Input Model
-                UInt32 mode = 0;
-                key.SetValue( fileName, mode, RegistryValueKind.DWord );
-            }
-
-        }
+        
     }
 }
