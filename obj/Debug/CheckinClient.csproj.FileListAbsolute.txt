@@ -1,8 +1,6 @@
 C:\Development\Rock-WindowsCheckin\bin\Debug\CheckinClient.exe.config
 C:\Development\Rock-WindowsCheckin\bin\Debug\CheckinClient.exe
 C:\Development\Rock-WindowsCheckin\bin\Debug\CheckinClient.pdb
-C:\Development\Rock-WindowsCheckin\bin\Debug\EO.WebBrowser.dll
-C:\Development\Rock-WindowsCheckin\bin\Debug\EO.WebBrowser.Wpf.dll
 C:\Development\Rock-WindowsCheckin\bin\Debug\Newtonsoft.Json.dll
 C:\Development\Rock-WindowsCheckin\bin\Debug\Rock.Wpf.dll
 C:\Development\Rock-WindowsCheckin\bin\Debug\Newtonsoft.Json.xml

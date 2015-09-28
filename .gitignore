@@ -1,3 +1,12 @@
-#specific folders for this project.  Ignore these since this project is not currently built by the Build server
+#file types
+*.user
+
+#specific files
+StyleCop.Cache
+
+#specific folders
+[Oo]bj/
+[Dd]ebug*/
+[Rr]elease*/
 
 *.v12.suo

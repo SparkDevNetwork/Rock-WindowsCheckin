@@ -54,8 +54,6 @@
                 </ScrollViewer>
             </StackPanel>
 
-            <Label Content="Zoom Level" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="4" Grid.Column="1" FontSize="24" Margin="0,16,12,0"/>
-            <TextBox x:Name="txtZoomLevel" Style="{StaticResource textboxStyleUrl}" Height="44" Text="1" Grid.Row="4" Grid.Column="2" Width="100" FontSize="24"  Margin="0,15,0,0" Padding="4" />
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Start" x:Name="btnStart" Style="{StaticResource buttonStylePrimary}" VerticalAlignment="Top" Width="130" Height="60" FontSize="24" Click="btnStart_Click"/>
