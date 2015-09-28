@@ -54,15 +54,15 @@ namespace CheckinClient
             warnedPrinterError = false;
 
             string labelContents = string.Empty;
-            var labels = JsonConvert.DeserializeObject<List<LabelItem>>( labelData );
+            var labels = JsonConvert.DeserializeObject<List<LabelItem>>(labelData);
 
             foreach ( LabelItem label in labels )
             {
                 // get label file
-                labelContents = GetLabelContents( label.LabelFile );   
+                labelContents = GetLabelContents(label.LabelFile);   
 
                 // merge fields
-                labelContents = MergeLabelFields( labelContents, label.MergeFields );
+                labelContents = MergeLabelFields(labelContents, label.MergeFields);
 
                 // print label
                 PrintLabel( labelContents, label.PrinterAddress );
@@ -148,9 +148,11 @@ namespace CheckinClient
             {
                 RawPrinterHelper.SendStringToPrinter( rockConfig.PrinterOverrideLocal, labelContents );
             }
-            else // else print to given IP
+            else if (!string.IsNullOrWhiteSpace(labelPrinterIp)) // else print to given IP
             {
                 PrintViaIp( labelContents, labelPrinterIp );
+            } else {
+                MessageBox.Show( "No printer has been configured.", "Print Error", MessageBoxButton.OK, MessageBoxImage.Error );
             }
         }
 
@@ -161,33 +163,40 @@ namespace CheckinClient
         /// <param name="ipAddress">The ip address.</param>
         private void PrintViaIp( string labelContents, string ipAddress )
         {
-            if ( !warnedPrinterError )
+            try
             {
-                Socket socket = null;
-                var printerIp = new IPEndPoint( IPAddress.Parse( ipAddress ), 9100 );
-
-                socket = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
-                IAsyncResult result = socket.BeginConnect( printerIp, null, null );
-                bool success = result.AsyncWaitHandle.WaitOne( 5000, true );
-
-                if ( socket.Connected )
+                if ( !warnedPrinterError )
                 {
-                    var ns = new NetworkStream( socket );
-                    byte[] toSend = System.Text.Encoding.ASCII.GetBytes( labelContents );
-                    ns.Write( toSend, 0, toSend.Length );
-                }
-                else
-                {
+                    Socket socket = null;
+                    var printerIp = new IPEndPoint( IPAddress.Parse( ipAddress ), 9100 );
 
-                    MessageBox.Show( String.Format( "Could not connect to the printer {0}.", ipAddress ), "Print Error", MessageBoxButton.OK, MessageBoxImage.Error );
-                    warnedPrinterError = true;
-                }
+                    socket = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
+                    IAsyncResult result = socket.BeginConnect( printerIp, null, null );
+                    bool success = result.AsyncWaitHandle.WaitOne( 5000, true );
 
-                if ( socket != null && socket.Connected )
-                {
-                    socket.Shutdown( SocketShutdown.Both );
-                    socket.Close();
+                    if ( socket.Connected )
+                    {
+                        var ns = new NetworkStream( socket );
+                        byte[] toSend = System.Text.Encoding.ASCII.GetBytes( labelContents );
+                        ns.Write( toSend, 0, toSend.Length );
+                    }
+                    else
+                    {
+
+                        MessageBox.Show( String.Format( "Could not connect to the printer {0}.", ipAddress ), "Print Error", MessageBoxButton.OK, MessageBoxImage.Error );
+                        warnedPrinterError = true;
+                    }
+
+                    if ( socket != null && socket.Connected )
+                    {
+                        socket.Shutdown( SocketShutdown.Both );
+                        socket.Close();
+                    }
                 }
+            }
+            catch ( Exception ex )
+            {
+                MessageBox.Show( String.Format( "Could not connect to the printer {0}. The error was {1}.", ipAddress, ex.Message ), "Print Error", MessageBoxButton.OK, MessageBoxImage.Error );
             }
         }
     }
