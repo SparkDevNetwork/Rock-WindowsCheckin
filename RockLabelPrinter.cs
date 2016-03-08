@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace CheckinClient
 {
@@ -53,22 +54,48 @@ namespace CheckinClient
         {
             warnedPrinterError = false;
 
-            string labelContents = string.Empty;
             var labels = JsonConvert.DeserializeObject<List<LabelItem>>(labelData);
 
-            foreach ( LabelItem label in labels )
+            Dictionary<string, List<LabelItem>> labelsByAddress = SortLabelsByAddress(labels);
+
+            //For each printer 
+            foreach ( string labelAddress in labelsByAddress.Keys)
             {
-                // get label file
-                labelContents = GetLabelContents(label.LabelFile);   
+                StringBuilder labelContents = new StringBuilder();
 
-                // merge fields
-                labelContents = MergeLabelFields(labelContents, label.MergeFields);
-
+                foreach (LabelItem label in labelsByAddress[labelAddress])
+                {
+                    // get label file & merge fields
+                    labelContents.Append(MergeLabelFields(GetLabelContents(label.LabelFile), label.MergeFields));
+                }
                 // print label
-                PrintLabel( labelContents, label.PrinterAddress );
+                PrintLabel( labelContents.ToString(), labelAddress );
             }
 
             //RawPrinterHelper.SendStringToPrinter( "ZDesigner GX420d (Copy 1)", s );
+        }
+
+        /// <summary>
+        /// Puts labels into a dictionary 
+        /// </summary>
+        /// <param name="labels">List of label items.</param>
+        /// <returns></returns>
+        private Dictionary<string, List<LabelItem>> SortLabelsByAddress(List<LabelItem> labels)
+        {
+            Dictionary<string, List<LabelItem>> labelsByAddress = new Dictionary<string, List<LabelItem>>();
+
+            foreach(var label in labels)
+            {
+                if (!labelsByAddress.ContainsKey(label.PrinterAddress))
+                {
+                    labelsByAddress[label.PrinterAddress] = new List<LabelItem>();
+                }
+
+                labelsByAddress[label.PrinterAddress].Add(label);
+
+            }
+
+            return labelsByAddress;
         }
 
         /// <summary>
