@@ -122,10 +122,13 @@ namespace CheckinClient
 
                 var rockConfig = RockConfig.Load();
 
-                CacheItemPolicy cachePolicy = new CacheItemPolicy();
-                cachePolicy.AbsoluteExpiration = new DateTimeOffset( DateTime.Now.AddSeconds( rockConfig.CacheLabelDuration ) );
-                //add an item to the cache   
-                cache.Add( labelFile, labelContents, cachePolicy );
+                if ( rockConfig.IsCachingEnabled )
+                {
+                    CacheItemPolicy cachePolicy = new CacheItemPolicy();
+                    cachePolicy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds( rockConfig.CacheLabelDuration );
+                    //add an item to the cache   
+                    cache.Set( labelFile, labelContents, cachePolicy );
+                }
             }
 
             return labelContents;

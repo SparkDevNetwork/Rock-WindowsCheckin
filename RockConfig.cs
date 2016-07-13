@@ -125,7 +125,7 @@ namespace CheckinClient
             get
             {
                 int? cacheLabelDuration = this["CacheLabelDuration"] as int?;
-                if (!cacheLabelDuration.HasValue || cacheLabelDuration <= 0)
+                if (!cacheLabelDuration.HasValue || cacheLabelDuration < 0)
                 {
                     cacheLabelDuration = 1440;
                 }
@@ -166,6 +166,32 @@ namespace CheckinClient
             set
             {
                 this["ZoomLevel"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is caching enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is caching enabled; otherwise, <c>false</c>.
+        /// </value>
+        [DefaultSettingValueAttribute( "true" )]
+        [UserScopedSetting]
+        public bool IsCachingEnabled
+        {
+            get
+            {
+                bool? isCachingEnabled = this["IsCachingEnabled"] as bool?;
+                if ( !isCachingEnabled.HasValue  )
+                {
+                    isCachingEnabled = true;
+                }
+
+                return isCachingEnabled.Value;
+            }
+            set
+            {
+                this["IsCachingEnabled"] = value;
             }
         }
 

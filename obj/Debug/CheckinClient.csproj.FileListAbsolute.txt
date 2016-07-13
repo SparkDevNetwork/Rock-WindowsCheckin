@@ -4,7 +4,6 @@ C:\Development\Rock-WindowsCheckin\bin\Debug\CheckinClient.pdb
 C:\Development\Rock-WindowsCheckin\bin\Debug\Newtonsoft.Json.dll
 C:\Development\Rock-WindowsCheckin\bin\Debug\Rock.Wpf.dll
 C:\Development\Rock-WindowsCheckin\bin\Debug\Newtonsoft.Json.xml
-C:\Development\Rock-WindowsCheckin\obj\Debug\CheckinClient.csprojResolveAssemblyReference.cache
 C:\Development\Rock-WindowsCheckin\obj\Debug\BrowserPage.baml
 C:\Development\Rock-WindowsCheckin\obj\Debug\images\logo-sm.baml
 C:\Development\Rock-WindowsCheckin\obj\Debug\MainWindow.baml
@@ -20,3 +19,4 @@ C:\Development\Rock-WindowsCheckin\obj\Debug\CheckinClient.Properties.Resources.
 C:\Development\Rock-WindowsCheckin\obj\Debug\CheckinClient.csproj.GenerateResource.Cache
 C:\Development\Rock-WindowsCheckin\obj\Debug\CheckinClient.exe
 C:\Development\Rock-WindowsCheckin\obj\Debug\CheckinClient.pdb
+C:\Development\Rock-WindowsCheckin\obj\Debug\CheckinClient.csprojResolveAssemblyReference.cache
