@@ -32,6 +32,30 @@ namespace CheckinClient
         public StartupPage()
         {
             InitializeComponent();
+
+            btnTest.Visibility = TestButtonVisiblity();
+        }
+
+        /// <summary>
+        /// Determines if the test button should be visible.
+        /// </summary>
+        /// <returns></returns>
+        private Visibility TestButtonVisiblity()
+        {
+            foreach ( Control control in spUsbPrinterList.Children )
+            {
+                if ( control is ToggleButton )
+                {
+                    ToggleButton tbControl = control as ToggleButton;
+                    if ( tbControl.IsChecked == true )
+                    {
+                        // show if a client printer is checked
+                        return Visibility.Visible;
+                    }
+                }
+            }
+            // don't show if no printer selected
+            return Visibility.Hidden;
         }
 
         /// <summary>
@@ -158,6 +182,37 @@ namespace CheckinClient
                     tbControl.IsChecked = false;
                 }
             }
+            btnTest.Visibility = TestButtonVisiblity();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnTest control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void btnTest_Click( object sender, RoutedEventArgs e )
+        {
+            var rockConfig = RockConfig.Load();
+            rockConfig.PrinterOverrideIp = txtPrinterOverrideIp.Text;
+            rockConfig.PrinterOverrideLocal = string.Empty;
+
+            if ( txtPrinterOverrideIp.Text == string.Empty )
+            {
+                foreach ( Control control in spUsbPrinterList.Children )
+                {
+                    if ( control is ToggleButton )
+                    {
+                        ToggleButton tbControl = control as ToggleButton;
+                        if ( tbControl.IsChecked != null && tbControl.IsChecked.Value == true )
+                        {
+                            rockConfig.PrinterOverrideLocal = tbControl.Content.ToString();
+                        }
+                    }
+                }
+            }
+            rockConfig.Save();
+            var printer = new RockLabelPrinter();
+            printer.TestPrint();
         }
     }
 }
