@@ -184,6 +184,25 @@ namespace CheckinClient
         }
 
         /// <summary>
+        /// Prints a test label to the chosen hardware printer.
+        /// </summary>
+        public void TestPrint()
+        {
+            var text = @"CT~~CD,~CC^~CT~
+^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR4,4~SD15^JUS^LRN^CI0^XZ
+^XA
+^MMT
+^PW609
+^LL0406
+^LS0
+^FT275,210^A0N,28,28^FH\^FDTEST^FS
+^PQ1,0,1,Y^XZ
+";
+            var rockConfig = RockConfig.Load();
+            RawPrinterHelper.SendStringToPrinter( rockConfig.PrinterOverrideLocal, text );
+        }
+
+        /// <summary>
         /// Prints the via ip.
         /// </summary>
         /// <param name="labelContents">The label contents.</param>
