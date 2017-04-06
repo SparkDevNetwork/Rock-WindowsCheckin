@@ -114,6 +114,8 @@ namespace CheckinClient
             }
             else
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+
                 // get label from site
                 using ( WebClient client = new WebClient() )
                 {
