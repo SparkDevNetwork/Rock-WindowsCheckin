@@ -52,7 +52,7 @@
             </CheckBox>
             <TextBox x:Name="txtCacheLabelDuration" Style="{StaticResource textboxStyle}" Grid.Row="4" Grid.Column="2" Height="44" Width="100" HorizontalAlignment="Left" FontSize="24" Margin="0,15,0,0" Padding="4"></TextBox>
 
-            <StackPanel x:Name="spPrinterOverride" Orientation="Vertical" Grid.Row="6" Grid.Column="6" Height="400">
+            <StackPanel x:Name="spPrinterOverride" Orientation="Vertical" Grid.Row="6" Grid.Column="2" Height="400">
                 <TextBox x:Name="txtPrinterOverrideIp" Style="{StaticResource textboxStyle}" Height="44" Width="300" Margin="0,15,0,0" FontSize="24" Padding="4" ></TextBox>
                 <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Padding="20,20,20,20" MaxHeight="300">
                     <StackPanel x:Name="spUsbPrinterList" Orientation="Vertical">
