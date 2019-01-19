@@ -196,32 +196,6 @@ namespace CheckinClient
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the printer is disabled or not.
-        /// </summary>
-        /// <value>
-        /// <c>false</c> printing disabled; otherwise, <c>true</c>.
-        /// </value>
-        [DefaultSettingValueAttribute("false")]
-        [UserScopedSetting]
-        public bool IsPrintingDisabled
-        {
-            get
-            {
-                bool? isPrintingDisabled = this["IsPrintingDisabled"] as bool?;
-                if (!isPrintingDisabled.HasValue)
-                {
-                    isPrintingDisabled = true;
-                }
-
-                return isPrintingDisabled.Value;
-            }
-            set
-            {
-                this["IsPrintingDisabled"] = value;
-            }
-        }
-
-        /// <summary>
         /// Loads this instance.
         /// </summary>
         /// <returns></returns>

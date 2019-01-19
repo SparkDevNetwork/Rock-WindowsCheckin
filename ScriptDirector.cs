@@ -18,7 +18,6 @@ namespace CheckinClient
         Page browserPage;
         ObjectCache cache;
         bool warnedPrinterError = false;
-        var rockConfig = RockConfig.Load();
 
         public ScriptDirector(Page p)
         {
@@ -27,11 +26,8 @@ namespace CheckinClient
         }
         public void PrintLabels(string tagJson)
         {
-            /* Checks if printer is enabled before printing. */
-            if (!rockConfig.IsPrintingDisabled) {
-                RockLabelPrinter printer = new RockLabelPrinter();
-                printer.PrintLabels( tagJson );
-            }
+            RockLabelPrinter printer = new RockLabelPrinter();
+            printer.PrintLabels( tagJson );
         }
 
         public void ErrorHandler(string message, string url, string lineNumber) {
