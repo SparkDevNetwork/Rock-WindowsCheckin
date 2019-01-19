@@ -23,6 +23,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
@@ -34,18 +35,24 @@
             </Grid.ColumnDefinitions>
             <Label Content="Check-in Address" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" FontSize="24" Margin="0,0,12,0"/>
             <Label Content="Enable Label Caching" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
-            <Label Content="Cache Duration" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3" Grid.Column="1" FontSize="24" Margin="0,16,12,0" />
-            <Label Content="Printer Override" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="5" Grid.Column="1" FontSize="24" Margin="0,15,12,0"/>
+            <Label Content="Disable Printer" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
+            <Label Content="Cache Duration" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="4" Grid.Column="1" FontSize="24" Margin="0,16,12,0" />
+            <Label Content="Printer Override" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="6" Grid.Column="1" FontSize="24" Margin="0,15,12,0"/>
             <TextBox x:Name="txtCheckinAddress" Style="{StaticResource textboxStyleUrl}" Height="44" Grid.Row="1" Grid.Column="2" Width="520" FontSize="24" Margin="0" Padding="4" />
             <CheckBox x:Name="cbEnableLabelCaching" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" FontSize="24" IsChecked="True" Margin="0,15,0,0" Height="16">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="3" ScaleY="3" />
                 </CheckBox.LayoutTransform>
             </CheckBox>
-            <TextBox x:Name="txtCacheLabelDuration" Style="{StaticResource textboxStyle}" Grid.Row="3" Grid.Column="2" Height="44" Width="100" HorizontalAlignment="Left" FontSize="24" Margin="0,15,0,0" Padding="4"></TextBox>
+            <!-- Disable printer option -->
+            <CheckBox x:Name="cbDisablePrinter" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" FontSize="24" IsChecked="False" Margin="0,15,0,0" Height="16">
+                <CheckBox.LayoutTransform>
+                    <ScaleTransform ScaleX="3" ScaleY="3" />
+                </CheckBox.LayoutTransform>
+            </CheckBox>
+            <TextBox x:Name="txtCacheLabelDuration" Style="{StaticResource textboxStyle}" Grid.Row="4" Grid.Column="2" Height="44" Width="100" HorizontalAlignment="Left" FontSize="24" Margin="0,15,0,0" Padding="4"></TextBox>
 
-
-            <StackPanel x:Name="spPrinterOverride" Orientation="Vertical" Grid.Row="5" Grid.Column="2" Height="400">
+            <StackPanel x:Name="spPrinterOverride" Orientation="Vertical" Grid.Row="6" Grid.Column="2" Height="400">
                 <TextBox x:Name="txtPrinterOverrideIp" Style="{StaticResource textboxStyle}" Height="44" Width="300" Margin="0,15,0,0" FontSize="24" Padding="4" ></TextBox>
                 <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Padding="20,20,20,20" MaxHeight="300">
                     <StackPanel x:Name="spUsbPrinterList" Orientation="Vertical">
