@@ -18,7 +18,7 @@ namespace CheckinClient
         Page browserPage;
         ObjectCache cache;
         bool warnedPrinterError = false;
-        var rockConfig = RockConfig.Load();
+        RockConfig rockConfig = RockConfig.Load();
 
         public ScriptDirector(Page p)
         {
