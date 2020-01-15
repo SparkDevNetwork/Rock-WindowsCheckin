@@ -61,6 +61,17 @@ namespace CheckinClient
                     checkinAddress = "http://yourserver.com/checkin";
                 }
 
+                // If a URL was provided in the Command Line, use it instead
+                string[] args = Environment.GetCommandLineArgs();
+
+                foreach (string arg in args)
+                {
+                    if (arg.StartsWith("/U:"))
+                    {
+                        checkinAddress = arg.Replace("/U:", "");
+                    }
+                }
+
                 return checkinAddress;
             }
 
