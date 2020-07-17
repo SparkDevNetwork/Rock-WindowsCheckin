@@ -30,7 +30,7 @@ namespace CheckinClient
             /* Checks if printer is enabled before printing. */
             if (!rockConfig.IsPrintingDisabled) {
                 RockLabelPrinter printer = new RockLabelPrinter();
-                printer.PrintLabels( tagJson );
+                printer.PrintLabels( tagJson, rockConfig.HasPrinterCutter );
             }
         }
 

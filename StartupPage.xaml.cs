@@ -67,6 +67,7 @@ namespace CheckinClient
             }
 
             rockConfig.IsCachingEnabled = cbEnableLabelCaching.IsChecked.HasValue ? cbEnableLabelCaching.IsChecked.Value : true;
+            rockConfig.HasPrinterCutter = cbPrinterHasCutter.IsChecked.HasValue ? cbPrinterHasCutter.IsChecked.Value : true;
             rockConfig.IsPrintingDisabled = cbDisablePrinter.IsChecked.HasValue ? cbDisablePrinter.IsChecked.Value : true;
             /*double zoomLevel;
             if (double.TryParse(txtZoomLevel.Text, out zoomLevel)) 
@@ -74,8 +75,8 @@ namespace CheckinClient
                 rockConfig.ZoomLevel = zoomLevel;
             }*/
 
-           rockConfig.PrinterOverrideIp = txtPrinterOverrideIp.Text;
-           rockConfig.PrinterOverrideLocal = string.Empty;
+            rockConfig.PrinterOverrideIp = txtPrinterOverrideIp.Text;
+            rockConfig.PrinterOverrideLocal = string.Empty;
 
             if ( txtPrinterOverrideIp.Text == string.Empty )
             {
@@ -122,6 +123,7 @@ namespace CheckinClient
             txtPrinterOverrideIp.Text = rockConfig.PrinterOverrideIp;
             txtCacheLabelDuration.Text = rockConfig.CacheLabelDuration.ToString();
             cbEnableLabelCaching.IsChecked = rockConfig.IsCachingEnabled;
+            cbPrinterHasCutter.IsChecked = rockConfig.HasPrinterCutter;
             cbDisablePrinter.IsChecked = rockConfig.IsPrintingDisabled;
             //txtZoomLevel.Text = rockConfig.ZoomLevel.ToString();
 

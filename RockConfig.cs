@@ -207,6 +207,32 @@ namespace CheckinClient
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the printer has a cutter or not.
+        /// </summary>
+        /// <value>
+        /// <c>false</c> if no cutter; otherwise, <c>true</c>.
+        /// </value>
+        [DefaultSettingValueAttribute( "false" )]
+        [UserScopedSetting]
+        public bool HasPrinterCutter
+        {
+            get
+            {
+                bool? hasPrinterCutter = this["HasPrinterCutter"] as bool?;
+                if ( !hasPrinterCutter.HasValue )
+                {
+                    hasPrinterCutter = true;
+                }
+
+                return hasPrinterCutter.Value;
+            }
+            set
+            {
+                this["HasPrinterCutter"] = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the printer is disabled or not.
         /// </summary>
         /// <value>

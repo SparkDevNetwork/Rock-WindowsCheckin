@@ -50,7 +50,8 @@ namespace CheckinClient
         /// Prints the labels.
         /// </summary>
         /// <param name="labelData">The label data.</param>
-        public void PrintLabels( string labelData )
+        /// <param name="hasPrinterCutter">if set to <c>true</c> the printer has a cutter; false otherwise.</param>
+        public void PrintLabels( string labelData, bool hasPrinterCutter )
         {
             warnedPrinterError = false;
 
@@ -59,14 +60,31 @@ namespace CheckinClient
             Dictionary<string, List<LabelItem>> labelsByAddress = SortLabelsByAddress(labels);
 
             //For each printer 
-            foreach ( string labelAddress in labelsByAddress.Keys)
+            foreach ( string labelAddress in labelsByAddress.Keys )
             {
                 StringBuilder labelContents = new StringBuilder();
 
+                int labelIndex = 0;
                 foreach (LabelItem label in labelsByAddress[labelAddress])
                 {
+                    labelIndex++;
+                    
                     // get label file & merge fields
-                    labelContents.Append(MergeLabelFields(GetLabelContents(label.LabelFile), label.MergeFields));
+                    var content = MergeLabelFields( GetLabelContents( label.LabelFile ), label.MergeFields ).TrimEnd();
+                    
+                    // is a cutter attached, and is this the last label or a "Rock Cut" command?
+                    if ( hasPrinterCutter && ( labelIndex == labelsByAddress[labelAddress].Count || content.Contains( "ROCK_CUT" ) ) )
+                    {
+                        // override any tear mode command (^MMT) by injecting the cut mode (^MMC) command
+                        content = ReplaceIfEndsWith( content, "^XZ", "^MMC^XZ" );
+                    }
+                    else
+                    {
+                        // inject suppress back-feed (^XB)
+                        content = ReplaceIfEndsWith( content, "^XZ", "^XB^XZ" );
+                    }
+
+                    labelContents.Append( content );
                 }
                 // print label
                 PrintLabel( labelContents.ToString(), labelAddress );
@@ -249,6 +267,24 @@ namespace CheckinClient
                 MessageBox.Show( String.Format( "Could not connect to the printer {0}. The error was {1}.", ipAddress, ex.Message ), "Print Error", MessageBoxButton.OK, MessageBoxImage.Error );
             }
         }
+
+        /// <summary>
+        /// Replaces string found at the very end of the content.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <param name="suffix">The suffix.</param>
+        /// <returns></returns>
+        public static string ReplaceIfEndsWith( string content, string suffix, string replacement )
+        {
+            if ( content.EndsWith( suffix ) )
+            {
+                return content.Substring( 0, content.Length - suffix.Length ) + replacement;
+            }
+            else
+            {
+                return content;
+            }
+        }
     }
 
     /// <summary>
@@ -261,4 +297,5 @@ namespace CheckinClient
         public string LabelFile { get; set; }
         public Dictionary<string, string> MergeFields { get; set; }
     }
+
 }
