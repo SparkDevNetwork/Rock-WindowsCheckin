@@ -1,14 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckinClient", "CheckinClient.csproj", "{ED157BE8-7C1E-4FED-8B79-88A8722FE994}"
-EndProject
-Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "Setup\Setup.isproj", "{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}"
-	ProjectSection(ProjectDependencies) = postProject
-		{ED157BE8-7C1E-4FED-8B79-88A8722FE994} = {ED157BE8-7C1E-4FED-8B79-88A8722FE994}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,18 +24,11 @@ Global
 		{ED157BE8-7C1E-4FED-8B79-88A8722FE994}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED157BE8-7C1E-4FED-8B79-88A8722FE994}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{ED157BE8-7C1E-4FED-8B79-88A8722FE994}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.CD_ROM|Any CPU.ActiveCfg = CD_ROM
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.CD_ROM|Any CPU.Build.0 = CD_ROM
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.Debug|Any CPU.ActiveCfg = DVD-5
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.Debug|Any CPU.Build.0 = DVD-5
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.DVD-5|Any CPU.ActiveCfg = DVD-5
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.DVD-5|Any CPU.Build.0 = DVD-5
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.Release|Any CPU.ActiveCfg = SingleImage
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.Release|Any CPU.Build.0 = SingleImage
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.SingleImage|Any CPU.ActiveCfg = SingleImage
-		{0FC3BCFA-A117-4F1A-A11A-A088D1F9CE27}.SingleImage|Any CPU.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EEF7B824-0C54-446D-A761-184ED699E34D}
 	EndGlobalSection
 EndGlobal

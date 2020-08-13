@@ -35,7 +35,7 @@
             </Grid.ColumnDefinitions>
             <Label Content="Check-in Address" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" FontSize="24" Margin="0,0,12,0"/>
             <Label Content="Enable Label Caching" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
-            <Label Content="Printer Has Cutter" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
+            <Label Content="Enable Label Cutting" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
             <Label Content="Disable Printer" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="4" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
             <Label Content="Cache Duration" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="5" Grid.Column="1" FontSize="24" Margin="0,16,12,0" />
             <Label Content="Printer Override" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="6" Grid.Column="1" FontSize="24" Margin="0,15,12,0"/>
