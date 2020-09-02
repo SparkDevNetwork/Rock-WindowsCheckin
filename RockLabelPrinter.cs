@@ -78,7 +78,7 @@ namespace CheckinClient
                         // override any tear mode command (^MMT) by injecting the cut mode (^MMC) command
                         content = ReplaceIfEndsWith( content, "^XZ", "^MMC^XZ" );
                     }
-                    else
+                    else if ( !content.Contains( "^MMC" ) )
                     {
                         // inject suppress back-feed (^XB)
                         content = ReplaceIfEndsWith( content, "^XZ", "^XB^XZ" );
