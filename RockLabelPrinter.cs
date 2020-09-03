@@ -80,8 +80,9 @@ namespace CheckinClient
                     }
                     else if ( hasPrinterCutter )
                     {
-                        // inject tear mode (^MMT) if they have a cutter but we're not going to cut.
-                        content = ReplaceIfEndsWith( content, "^XZ", "^MMT^XZ" );
+                        // inject suppress back-feed (^XB) if they have a cutter but we're not going to cut.
+                        // This will also prevent the sticky cut command from causing a cut.
+                        content = ReplaceIfEndsWith( content, "^XZ", "^XB^XZ" );
                     }
 
                     labelContents.Append( content );
