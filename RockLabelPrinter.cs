@@ -78,10 +78,10 @@ namespace CheckinClient
                         // override any tear mode command (^MMT) by injecting the cut mode (^MMC) command
                         content = ReplaceIfEndsWith( content, "^XZ", "^MMC^XZ" );
                     }
-                    else if ( !content.Contains( "^MMC" ) )
+                    else if ( hasPrinterCutter )
                     {
-                        // inject suppress back-feed (^XB)
-                        content = ReplaceIfEndsWith( content, "^XZ", "^XB^XZ" );
+                        // inject tear mode (^MMT) if they have a cutter but we're not going to cut.
+                        content = ReplaceIfEndsWith( content, "^XZ", "^MMT^XZ" );
                     }
 
                     labelContents.Append( content );
