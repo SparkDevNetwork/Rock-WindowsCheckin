@@ -65,28 +65,36 @@ namespace CheckinClient
                 StringBuilder labelContents = new StringBuilder();
 
                 int labelIndex = 0;
-                foreach (LabelItem label in labelsByAddress[labelAddress])
+                foreach ( LabelItem label in labelsByAddress[labelAddress] )
                 {
                     labelIndex++;
                     
                     // get label file & merge fields
                     var content = MergeLabelFields( GetLabelContents( label.LabelFile ), label.MergeFields ).TrimEnd();
                     
-                    // is a cutter attached, and is this the last label or a "Rock Cut" command?
-                    if ( hasPrinterCutter && ( labelIndex == labelsByAddress[labelAddress].Count || content.Contains( "ROCK_CUT" ) ) )
+                    // If the "enable label cutting" feature is enabled, then we are going to
+                    // control which mode the printer is in. In this case, we will remove any
+                    // tear-mode (^MMT) commands from the content and add the cut-mode (^MMC).
+                    if ( hasPrinterCutter )
                     {
-                        // override any tear mode command (^MMT) by injecting the cut mode (^MMC) command
+                        content = content.Replace( "^MMT", string.Empty );
+
+                        // Here we are forcing the printer into cut mode (because
+                        // we don't know if it has been put into cut-mode already) even
+                        // though we might be suppressing the cut below. This is correct.
                         content = ReplaceIfEndsWith( content, "^XZ", "^MMC^XZ" );
-                    }
-                    else if ( hasPrinterCutter )
-                    {
-                        // inject suppress back-feed (^XB) if they have a cutter but we're not going to cut.
-                        // This will also prevent the sticky cut command from causing a cut.
-                        content = ReplaceIfEndsWith( content, "^XZ", "^XB^XZ" );
+
+                        // If it's not the last label or a "ROCK_CUT" label, then inject
+                        // a suppress back-feed (^XB) command which will also suppress the cut.
+                        if ( ! ( labelIndex == labelsByAddress[labelAddress].Count || content.Contains( "ROCK_CUT" ) ) )
+                        {
+                            content = ReplaceIfEndsWith( content, "^XZ", "^XB^XZ" );
+                        }
                     }
 
                     labelContents.Append( content );
                 }
+
                 // print label
                 PrintLabel( labelContents.ToString(), labelAddress );
             }
