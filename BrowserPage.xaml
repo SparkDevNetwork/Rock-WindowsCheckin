@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:eo="http://schemas.essentialobjects.com/wpf/"
+      xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
 	  Title="Check-in"
@@ -14,8 +15,8 @@
         <Grid x:Name="frmWebBrowser">
             
             
-            <WebBrowser x:Name="wbWebBrowser" />
             
+            <wv2:WebView2 Name="wbWebBrowser" />
 
             <Popup x:Name="puOverlay" AllowsTransparency="True" PlacementTarget="{Binding ElementName=wbMain}" Opacity="0.5" Placement="Left" HorizontalOffset="100">
                 <Button x:Name="btnClose" Width="100" Height="100" Opacity="0.01" BorderBrush="{x:Null}" FocusVisualStyle="{x:Null}" Click="btnClose_Click"></Button>
