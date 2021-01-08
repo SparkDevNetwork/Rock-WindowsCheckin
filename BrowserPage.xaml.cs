@@ -119,7 +119,7 @@ namespace CheckinClient
         /// <param name="e">The <see cref="Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs"/> instance containing the event data.</param>
         private void CoreWebView2_WebResourceRequested( object sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs e )
         {
-            e.Request.Headers.SetHeader( "user-agent", e.Request.Headers.GetHeader( "user-agent" ) + " (Rock-Checkin-Client-v4)" );
+            //e.Request.Headers.SetHeader( "user-agent", e.Request.Headers.GetHeader( "user-agent" ) + " (Rock-Checkin-Client-v4)" );  // see engineering note above before removing this
         }
 
         /// <summary>
