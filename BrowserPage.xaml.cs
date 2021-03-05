@@ -15,9 +15,11 @@
 // </copyright>
 //
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 
 namespace CheckinClient
@@ -85,9 +87,17 @@ namespace CheckinClient
             // Wait for the control to load
             try
             {
-                await wbWebBrowser.EnsureCoreWebView2Async( null );
+                var checkinClientUserDataFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "Spark_Development_Network", "CheckinClient" );
+                Directory.CreateDirectory( checkinClientUserDataFolder );
 
-                // Setup event to recieve messages back from the content's javascript
+                // specify the userFolder to something the user has access to
+                CoreWebView2Environment coreWebView2Environment = null;
+                await CoreWebView2Environment.CreateAsync( userDataFolder: checkinClientUserDataFolder )
+                    .ContinueWith( a => coreWebView2Environment = a.Result );
+
+                await wbWebBrowser.EnsureCoreWebView2Async( coreWebView2Environment );
+
+                // Setup event to receive messages back from the content's JavaScript.
                 wbWebBrowser.WebMessageReceived += WbWebBrowser_WebMessageReceived;
 
                 // Setup event to allow for us to inject a request header that allows the content to know that it's running inside of the check-in windows host
