@@ -21,7 +21,7 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "CheckinClient" )]
+[assembly: AssemblyTitle( "RockRMS Checkin Client" )]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -36,3 +36,7 @@ using System.Windows;
                                               //(used if a resource is not found in the page, 
                                               // app, or any theme specific resource dictionaries)
 )]
+[assembly: AssemblyVersion( "1.13.0.0" )]
+[assembly: AssemblyCompany( "Spark Development Network" )]
+[assembly: AssemblyCopyright( "Copyright © Spark Development Network 2011-2021" )]
+[assembly: AssemblyFileVersion( "1.13.0.0" )]
