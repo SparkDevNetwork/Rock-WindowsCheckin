@@ -103,6 +103,7 @@ namespace CheckinClient
                 // Setup event to allow for us to inject a request header that allows the content to know that it's running inside of the check-in windows host
                 wbWebBrowser.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
                 wbWebBrowser.CoreWebView2.AddWebResourceRequestedFilter( "*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Document );
+                wbWebBrowser.CoreWebView2.PermissionRequested += CoreWebView2_PermissionRequested;
 
                 // Navigate to the configured start page
                 wbWebBrowser.CoreWebView2.Navigate( _rockConfig.CheckinAddress );
@@ -120,6 +121,20 @@ namespace CheckinClient
 
                 Application.Current.Shutdown();
             }            
+        }
+
+        /// <summary>
+        /// Handles the PermissionRequested event of the CoreWebView2 control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CoreWebView2PermissionRequestedEventArgs"/> instance containing the event data.</param>
+        private void CoreWebView2_PermissionRequested( object sender, CoreWebView2PermissionRequestedEventArgs e )
+        {
+            if ( e.PermissionKind == CoreWebView2PermissionKind.Camera )
+            {
+                // Allow use of Camera thru browser
+                e.State = CoreWebView2PermissionState.Allow;
+            }
         }
 
         /// <summary>
