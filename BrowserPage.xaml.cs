@@ -75,6 +75,8 @@ namespace CheckinClient
             _closeButtonRestartTimer.Tick += new EventHandler( closeButtonRestartTimer_Tick );
             _closeButtonRestartTimer.Interval = new TimeSpan( 0, 0, 10 );
 
+            wbWebBrowser.Focus();
+
             // Set the close button overlay panel to open
             puOverlay.IsOpen = true;
         }
