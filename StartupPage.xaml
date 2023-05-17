@@ -30,9 +30,27 @@
 
             <!-- Row 0 -->
             <Label Content="Check-in Address" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" FontSize="24" Margin="0,0,12,0"/>
-            <TextBox x:Name="txtCheckinAddress" Style="{StaticResource textboxStyleUrl}" Height="44" Grid.Row="0" Grid.Column="2" Width="520" FontSize="24" Margin="0" Padding="4" />
+            <TextBox x:Name="txtCheckinAddress" Style="{StaticResource textboxStyleUrl}" Height="44" Grid.Row="0" Grid.Column="2" Width="520" FontSize="24" Margin="0" Padding="4"  />
+            <TextBlock x:Name="txtCheckinAddressPlaceholder" IsHitTestVisible="False" Height="44" Grid.Row="0" Grid.Column="2" Width="520" FontSize="24" Margin="0" Padding="8, 5, 8, 5" Text="https://rock.yourserver.com/checkin" Foreground="DarkGray">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsFocused, ElementName=txtCheckinAddress}" Value="false" />
+                                <Condition Binding="{Binding Text, ElementName=txtCheckinAddress}" Value="" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
-            <!-- Row 1 -->
+        <!-- Row 1 -->
             <Label Content="Enable Label Caching" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" FontSize="24" Margin="0,15,12,0" />
             <CheckBox x:Name="cbEnableLabelCaching" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="1" FontSize="24" IsChecked="True" Margin="0,15,0,0" Height="16">
                 <CheckBox.LayoutTransform>

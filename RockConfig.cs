@@ -55,11 +55,7 @@ namespace CheckinClient
         {
             get
             {
-                string checkinAddress = this["CheckinAddress"] as string;
-                if (string.IsNullOrWhiteSpace(checkinAddress))
-                {
-                    checkinAddress = "http://yourserver.com/checkin";
-                }
+                string checkinAddress = this["CheckinAddress"] as string ?? string.Empty;
 
                 // If a URL was provided in the Command Line, use it instead
                 string[] args = Environment.GetCommandLineArgs();
