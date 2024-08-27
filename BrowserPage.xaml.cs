@@ -15,11 +15,17 @@
 // </copyright>
 //
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+
 using Microsoft.Web.WebView2.Core;
+
 using Newtonsoft.Json;
 
 namespace CheckinClient
@@ -107,10 +113,18 @@ namespace CheckinClient
                 wbWebBrowser.CoreWebView2.AddWebResourceRequestedFilter( "*", Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.Document );
                 wbWebBrowser.CoreWebView2.PermissionRequested += CoreWebView2_PermissionRequested;
 
+                var scriptStream = GetType().Assembly.GetManifestResourceStream( "CheckinClient.resources.RockCheckinNative.js" );
+                using ( var streamReader = new StreamReader( scriptStream, Encoding.UTF8 ) )
+                {
+                    var script = streamReader.ReadToEnd();
+
+                    await wbWebBrowser.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync( script );
+                }
+
                 // Navigate to the configured start page
                 wbWebBrowser.CoreWebView2.Navigate( _rockConfig.CheckinAddress );
             }
-            catch( Exception )
+            catch ( Exception )
             {
                 var result = MessageBox.Show( $"We were not able to initialize the embedded web browser component. Please ensure that the Microsoft Edge WebView2 run-time is installed. You can download it from the address below: \n\n {RUNTIME_DOWNLOAD_LOCATION} \n\n Would you like to download the run-time now?", "Rock Check-in", MessageBoxButton.YesNo, MessageBoxImage.Information );
 
@@ -122,7 +136,7 @@ namespace CheckinClient
                 }
 
                 Application.Current.Shutdown();
-            }            
+            }
         }
 
         /// <summary>
@@ -172,6 +186,10 @@ namespace CheckinClient
                             }
                             break;
                         }
+
+                    case "NATIVE":
+                        HandleRockCheckinNative( clientEvent.EventData );
+                        break;
                 }
             }
             catch ( Exception )
@@ -208,6 +226,90 @@ namespace CheckinClient
             _closeClickBuffer = 0;
             _closeButtonRestartTimer.Stop();
         }
+        
+        /// <summary>
+        /// Handle a native event via the RockCheckinNative interface object.
+        /// This will handle all the logic required to resolve the promise
+        /// in the request.
+        /// </summary>
+        /// <param name="rawEvent">The raw event data.</param>
+        private void HandleRockCheckinNative( string rawEvent )
+        {
+            try
+            {
+                var parameters = JsonConvert.DeserializeObject<List<string>>( rawEvent );
+
+                if ( parameters.Count < 2 )
+                {
+                    return;
+                }
+
+                var command = parameters[0];
+                var promiseId = parameters[1];
+
+                Task.Run( async () =>
+                {
+                    try
+                    {
+                        var result = await HandleRockCheckinNativeCommandAsync( command, parameters.Skip( 2 ).ToList() );
+
+                        await Dispatcher.Invoke( async () =>
+                        {
+                            var p1 = JsonConvert.SerializeObject( promiseId );
+                            var p2 = JsonConvert.SerializeObject( result );
+
+                            await wbWebBrowser.CoreWebView2.ExecuteScriptAsync( $"RockCheckinNative.ResolveNativePromise( {p1}, {p2}, false );" );
+                        } );
+                    }
+                    catch ( Exception ex )
+                    {
+                        await Dispatcher.Invoke( async () =>
+                        {
+                            var p1 = JsonConvert.SerializeObject( promiseId );
+                            var p2 = JsonConvert.SerializeObject( new Dictionary<string, object>
+                            {
+                                ["Error"] = ex.Message
+                            } );
+
+                            await wbWebBrowser.CoreWebView2.ExecuteScriptAsync( $"RockCheckinNative.ResolveNativePromise( {p1}, {p2}, true );" );
+                        } );
+                    }
+                } );
+            }
+            catch ( Exception )
+            {
+                MessageBox.Show( "An invalid request was recieved from the client.", "Rock Check-in", MessageBoxButton.OK, MessageBoxImage.Warning );
+            }
+        }
+
+        /// <summary>
+        /// Handles the commands from the RockCheckinNative interface object.
+        /// This will be called by <see cref="HandleRockCheckinNative(string)"/>
+        /// in a new <see cref="Task"/>, not on the main thread.
+        /// </summary>
+        /// <param name="command">The name of the command.</param>
+        /// <param name="parameters">The parameters passed to the command.</param>
+        /// <returns>The result object (or <c>null</c>) to return from the command.</returns>
+        private async Task<object> HandleRockCheckinNativeCommandAsync( string command, List<string> parameters )
+        {
+            if ( command == "PrintLabels" )
+            {
+                RockLabelPrinter printer = new RockLabelPrinter();
+                printer.PrintLabels( parameters[0], _rockConfig.HasPrinterCutter );
+
+                return null;
+            }
+            else if ( command == "PrintV2Labels" )
+            {
+                RockLabelPrinter printer = new RockLabelPrinter();
+
+                return await printer.PrintV2Labels( parameters[0] );
+            }
+            else
+            {
+                throw new Exception( "Unknown command received." );
+            }
+        }
 
         /// <summary>
         /// POCO for handeling browser events
@@ -220,7 +322,7 @@ namespace CheckinClient
             /// <value>
             /// The name of the event.
             /// </value>
-            [JsonProperty("eventName")]
+            [JsonProperty( "eventName" )]
             public string EventName { get; set; } = string.Empty;
 
             /// <summary>

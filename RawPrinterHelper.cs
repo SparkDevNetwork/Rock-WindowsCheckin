@@ -15,10 +15,8 @@
 // </copyright>
 //
 using System;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.InteropServices;
 
 
 namespace CheckinClient
