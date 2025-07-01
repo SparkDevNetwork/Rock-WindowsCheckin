@@ -16,6 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Caching;
@@ -303,19 +304,105 @@ namespace CheckinClient
         #region V2 Printing Code
 
         /// <summary>
+        /// The command sequence to append to make the label cut. This replaces
+        /// the normal ^XZ end sequence so we need to append that again.
+        /// </summary>
+        private static readonly byte[] _cutAndEndLabel = new byte[]
+        {
+            (byte)'^',
+            (byte)'M',
+            (byte)'M',
+            (byte)'C',
+            (byte)'^',
+            (byte)'X',
+            (byte)'Z',
+            (byte)'\r',
+            (byte)'\n'
+        };
+
+        /// <summary>
+        /// The command sequence to append to make not backfeed which also
+        /// supresses cutting. This replaces the normal ^XZ end sequence so we
+        /// need to append that again.
+        /// </summary>
+        private static readonly byte[] _supressBackfeedAndEndLabel = new byte[]
+        {
+            (byte)'^',
+            (byte)'X',
+            (byte)'B',
+            (byte)'^',
+            (byte)'X',
+            (byte)'Z',
+            (byte)'\r',
+            (byte)'\n'
+        };
+
+        /// <summary>
         /// Print the V2 labels from the JSON encoded list of labels.
         /// </summary>
         /// <param name="labelData">The JSON encoded list of labels.</param>
         /// <returns>A list of error messages.</returns>
         public async Task<List<string>> PrintV2Labels( string labelData )
         {
+            var rockConfig = RockConfig.Load();
             var labels = JsonConvert.DeserializeObject<List<ClientLabelBag>>( labelData );
+
+            if ( !string.IsNullOrEmpty( rockConfig.PrinterOverrideIp ) )
+            {
+                return await PrintV2LabelsToIpAsync( labels, rockConfig.PrinterOverrideIp, rockConfig.HasPrinterCutter );
+            }
+            else if ( !string.IsNullOrEmpty( rockConfig.PrinterOverrideLocal ) )
+            {
+                PrintV2LabelsToUsb( labels, rockConfig.PrinterOverrideLocal, rockConfig.HasPrinterCutter );
+
+                return new List<string>();
+            }
+            else
+            {
+                var errorMessages = new List<string>();
+
+                foreach ( var labelGroup in labels.GroupBy( l => l.PrinterAddress ) )
+                {
+                    // If no printer address is specified, then we can't print. Return
+                    // one error message for each label in the group.
+                    if ( string.IsNullOrWhiteSpace( labelGroup.Key ) )
+                    {
+                        errorMessages.AddRange( labelGroup.Select( _ => "No printer has been configured." ) );
+                    }
+                    else
+                    {
+                        var groupErrorMessages = await PrintV2LabelsToIpAsync( labelGroup.ToList(), labelGroup.Key, rockConfig.HasPrinterCutter );
+
+                        errorMessages.AddRange( groupErrorMessages );
+                    }
+                }
+
+                return errorMessages;
+            }
+        }
+
+        /// <summary>
+        /// Prints the V2 labels to an IP address.
+        /// </summary>
+        /// <param name="labels">The labels to be printed.</param>
+        /// <param name="labelPrinterIp">The IP address to print the labels to.</param>
+        /// <param name="printerHasCutter">Determines if the printer supports cutting.</param>
+        /// <returns>A list of error messages.</returns>
+        private async Task<List<string>> PrintV2LabelsToIpAsync( List<ClientLabelBag> labels, string labelPrinterIp, bool printerHasCutter )
+        {
             var errorMessages = new List<string>();
 
-            foreach ( var label in labels )
+            for ( int labelIndex = 0; labelIndex < labels.Count; labelIndex++ )
             {
+                var label = labels[labelIndex];
                 var data = Convert.FromBase64String( label.Data );
-                var message = await PrintLabelAsync( data, label.PrinterAddress );
+
+                if ( printerHasCutter )
+                {
+                    data = AmendWithCutCommands( data, labelIndex == labels.Count - 1 );
+                }
+
+                var message = await PrintViaIpAsync( data, labelPrinterIp );
 
                 if ( !string.IsNullOrWhiteSpace( message ) )
                 {
@@ -327,39 +414,32 @@ namespace CheckinClient
         }
 
         /// <summary>
-        /// Prints the label.
+        /// Prints the V2 labels to an USB printer.
         /// </summary>
-        /// <param name="labelContents">The label contents.</param>
-        /// <param name="labelPrinterIp">The label printer ip.</param>
-        private Task<string> PrintLabelAsync( byte[] labelContents, string labelPrinterIp )
+        /// <param name="labels">The labels to be printed.</param>
+        /// <param name="printerName">The name of the printer to print the labels to.</param>
+        /// <param name="printerHasCutter">Determines if the printer supports cutting.</param>
+        /// <returns>A list of error messages.</returns>
+        private void PrintV2LabelsToUsb( List<ClientLabelBag> labels, string printerName, bool printerHasCutter )
         {
-            var rockConfig = RockConfig.Load();
+            for ( int labelIndex = 0; labelIndex < labels.Count; labelIndex++ )
+            {
+                var label = labels[labelIndex];
+                var data = Convert.FromBase64String( label.Data );
 
-            // if IP override
-            if ( !string.IsNullOrEmpty( rockConfig.PrinterOverrideIp ) )
-            {
-                return PrintViaIpAsync( labelContents, rockConfig.PrinterOverrideIp );
-            }
-            else if ( !string.IsNullOrEmpty( rockConfig.PrinterOverrideLocal ) ) // if printer local
-            {
-                var zpl = Encoding.UTF8.GetString( labelContents );
+                if ( printerHasCutter )
+                {
+                    data = AmendWithCutCommands( data, labelIndex == labels.Count - 1 );
+                }
+
+                var zpl = Encoding.UTF8.GetString( data );
 
                 // For USB printing we need to conver ^CI28 to ^CI27 inside of the label.
                 // Per research from Lee Peterson
                 // ^CI27 sets a Zebra printer to expect the code page Windows-1252 data as generated by the Win/USB app rather than
                 // UTF -8 as expected with ^CI28, so extended characters print correctly.
                 zpl = zpl.Replace( "^CI28", "^CI27" );
-                RawPrinterHelper.SendStringToPrinter( rockConfig.PrinterOverrideLocal, zpl );
-
-                return Task.FromResult<string>( null );
-            }
-            else if ( !string.IsNullOrWhiteSpace( labelPrinterIp ) ) // else print to given IP
-            {
-                return PrintViaIpAsync( labelContents, labelPrinterIp );
-            }
-            else
-            {
-                return Task.FromResult( "No printer has been configured." );
+                RawPrinterHelper.SendStringToPrinter( printerName, zpl );
             }
         }
 
@@ -420,6 +500,47 @@ namespace CheckinClient
             catch ( Exception ex )
             {
                 return $"Could not connect to the printer {ipAddress}. The error was {ex.Message}.";
+            }
+        }
+
+        /// <summary>
+        /// Amends the print data with the cut commands required for the
+        /// operation.
+        /// </summary>
+        /// <param name="labelContent">The print data.</param>
+        /// <param name="isLastLabel"><c>true</c> if this is the last label to be printed.</param>
+        /// <returns>A new array of bytes to be printed.</returns>
+        private byte[] AmendWithCutCommands( byte[] labelContent, bool isLastLabel )
+        {
+            var index = Array.LastIndexOf( labelContent, ( byte ) '^' );
+
+            // Ensure we have the expected last command.
+            if ( index == -1 || index > labelContent.Length - 3 || labelContent[index + 1] != 'X' || labelContent[index + 2] != 'Z' )
+            {
+                return labelContent;
+            }
+
+            if ( isLastLabel )
+            {
+                // If this is the last label and it ends in ^XZ then insert the
+                // cut command.
+                var newContent = new byte[index - 1 + _cutAndEndLabel.Length];
+
+                labelContent.CopyTo( newContent, 0 );
+                _cutAndEndLabel.CopyTo( newContent, newContent.Length - _cutAndEndLabel.Length );
+
+                return newContent;
+            }
+            else
+            {
+                // If this is not the last label and it ends in ^XZ then insert the
+                // supress backfeed command.
+                var newContent = new byte[index - 1 + _supressBackfeedAndEndLabel.Length];
+
+                labelContent.CopyTo( newContent, 0 );
+                _supressBackfeedAndEndLabel.CopyTo( newContent, newContent.Length - _supressBackfeedAndEndLabel.Length );
+
+                return newContent;
             }
         }
 
