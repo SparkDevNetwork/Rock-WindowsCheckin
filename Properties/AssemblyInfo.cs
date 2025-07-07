@@ -36,7 +36,7 @@ using System.Windows;
                                               //(used if a resource is not found in the page, 
                                               // app, or any theme specific resource dictionaries)
 )]
-[assembly: AssemblyVersion( "1.14.0.0" )]
+[assembly: AssemblyVersion( "1.15.0.0" )]
 [assembly: AssemblyCompany( "Spark Development Network" )]
 [assembly: AssemblyCopyright( "Copyright © Spark Development Network 2011-2024" )]
-[assembly: AssemblyFileVersion( "1.14.0.0" )]
+[assembly: AssemblyFileVersion( "1.15.0.0" )]
