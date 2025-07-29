@@ -1,0 +1,15 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.0">
+  <PropertyGroup>
+    <OutputName>checkinclient</OutputName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="InstallBanner.jpg" />
+    <Content Include="InstallWelcome.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CheckinClient.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="6.0.1" />
+  </ItemGroup>
+</Project>
