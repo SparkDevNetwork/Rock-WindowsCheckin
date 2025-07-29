@@ -16,6 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,11 @@ namespace CheckinClient
         public MainWindow()
         {
             InitializeComponent();
+
+            if ( !ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal ).HasFile )
+            {
+                RockConfig.Default.Upgrade();
+            }
         }
 
         private void frmMain_Loaded( object sender, RoutedEventArgs e )
